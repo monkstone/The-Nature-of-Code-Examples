@@ -3,15 +3,9 @@
 def setup
   size(800, 200)
   background(255)
-
   @h = 30
   # Call the recursive function
   cantor(35, 0, 730)
-end
-
-def draw
-  # No need to loop
-  no_loop
 end
 
 def cantor(x, y, len)
@@ -20,11 +14,11 @@ def cantor(x, y, len)
     # Draw line (as rectangle to make it easier to see)
     no_stroke
     fill(0)
-    rect(x, y, len, @h/3)
+    rect(x, y, len, @h / 3)
     # Go down to next y position
     y += @h
     # Draw 2 more lines 1/3rd the length (without the middle section)
-    cantor(x, y, len/3)
-    cantor(x+len*2/3, y, len/3)
+    cantor(x, y, len / 3)
+    cantor(x  + len * 2 / 3, y, len / 3)
   end
 end

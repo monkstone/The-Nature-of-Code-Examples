@@ -6,7 +6,7 @@ end
 
 def draw
   background(255)
-  draw_circle(width/2, height/2, 400)
+  draw_circle(width / 2, height / 2, 400)
   no_loop
 end
 
@@ -19,9 +19,9 @@ def draw_circle(x, y, r)
   # Exit condition, stop when radius is too small
   if r > 8
     # now we draw 2 circles, 1 on the left, 1 on the right
-    draw_circle(x + r/2, y, r/2)
-    draw_circle(x - r/2, y, r/2)
-    draw_circle(x, y + r/2, r/2)
-    draw_circle(x, y - r/2, r/2)
+    draw_circle(x + r / 2, y, r / 2)
+    draw_circle(x - r / 2, y, r / 2)
+    draw_circle(x, y + r / 2, r / 2)
+    draw_circle(x, y - r / 2, r / 2)
   end
 end

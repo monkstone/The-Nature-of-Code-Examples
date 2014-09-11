@@ -1,6 +1,7 @@
 # The Nature of Code
 # http://natureofcode.com
-#NOC_8_09_LSystem
+# NOC_8_09_LSystem
+# NB: There are far more elegant ways of creating LSystems in ruby
 
 class Turtle
   attr_writer :len, :todo
@@ -50,9 +51,9 @@ class LSystem
   end
 
   def generate
-    nextgen = ""
+    nextgen = ''
     @sentence.each_char do |curr|
-      replace = "" + curr
+      replace = '' + curr
       @ruleset.each do |rule|
         a = rule.a
         if a == curr
@@ -60,7 +61,6 @@ class LSystem
           break
         end
       end
-
       nextgen += replace
     end
     @sentence = nextgen
@@ -70,42 +70,37 @@ end
 
 def setup
   size(600, 600)
+  # Create an empty ruleset
+  # @ruleset = []]
+  # Fill with two rules (These are rules for the Sierpinksi Gasket Triangle)
+  # @ruleset << Rule.new('F','F--F--F--G')
+  # @ruleset << new Rule('G','GG')
+  # Create LSystem with axiom and ruleset
+  # @lsys = LSystem.new('F--F--F', @ruleset)
+  # @turtle = Turtle.new(@lsys.sentence,width * 2,TWO_PI / 3)
 
-   # Create an empty ruleset
-   # @ruleset = []]
-   # Fill with two rules (These are rules for the Sierpinksi Gasket Triangle)
-   # @ruleset << Rule.new('F',"F--F--F--G")
-   # @ruleset << new Rule('G',"GG")
-   # Create LSystem with axiom and ruleset
-   # @lsys = LSystem.new("F--F--F", @ruleset)
-   # @turtle = Turtle.new(@lsys.sentence,width*2,TWO_PI/3)
-
-   # @ruleset = []
-   # @ruleset << Rule.new['F',"FF+[+F-F-F]-[-F+F+F]")
-   # @lsys = LSystem.new("F-F-F-F", @ruleset)
-   # @turtle = Turtle.new(@lsys.sentence,width-1,PI/2)
-
+  # @ruleset = []
+  # @ruleset << Rule.new['F','FF+[+F-F-F]-[-F+F+F]')
+  # @lsys = LSystem.new('F-F-F-F', @ruleset)
+  # @turtle = Turtle.new(@lsys.sentence,width-1,PI/2)
   @ruleset = []
-  @ruleset << Rule.new('F', "FF+[+F-F-F]-[-F+F+F]")
-  @lsys = LSystem.new("F", @ruleset)
-  @turtle = Turtle.new(@lsys.sentence, height/3, 25.radians)
-
+  @ruleset << Rule.new('F', 'FF+[+F-F-F]-[-F+F+F]')
+  @lsys = LSystem.new('F', @ruleset)
+  @turtle = Turtle.new(@lsys.sentence, height / 3, 25.radians)
   @counter = 0
-  smooth
 end
 
 def draw
   background(255)
   fill(0)
-  #text("Click mouse to generate", 10, height-10);
-
-  translate(width/2, height)
-  rotate(-PI/2)
+  #text('Click mouse to generate', 10, height-10)
+  translate(width / 2, height)
+  rotate(-PI / 2)
   @turtle.render
   no_loop
 end
 
-def mousePressed
+def mouse_pressed
   if @counter < 5
     push_matrix
     @lsys.generate
