@@ -43,16 +43,15 @@ def branch(h)
   h *= 0.66
   # All recursive functions must have an exit condition!!!!
   # Here, ours is when the length of the branch is 2 pixels or less
-  if h > 2
-    # A rand number of branches
-    n = rand(1 .. 4)
-    n.times do
-      # Picking a rand angle
-      theta = rand(-PI / 2 ..  PI / 2)
-      push_matrix      # Save the current state of transformation (i.e. where are we now)
-      rotate(theta)    # Rotate by theta
-      branch(h)        # Ok, now call myself to branch again
-      pop_matrix       # Whenever we get back here, we "pop" in order to restore the previous matrix state
-    end
+  return unless h > 2
+  # A rand number of branches
+  n = rand(1 .. 4)
+  n.times do
+    # Picking a rand angle
+    theta = rand(-PI / 2 ..  PI / 2)
+    push_matrix      # Save the current state of transformation (i.e. where are we now)
+    rotate(theta)    # Rotate by theta
+    branch(h)        # Ok, now call myself to branch again
+    pop_matrix       # Whenever we get back here, we "pop" in order to restore the previous matrix state
   end
 end

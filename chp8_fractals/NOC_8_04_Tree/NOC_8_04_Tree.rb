@@ -27,15 +27,14 @@ def branch(len)
   len *= 0.66
   # All recursive functions must have an exit condition!!!!
   # Here, ours is when the length of the branch is 2 pixels or less
-  if len > 2
-    push_matrix    # Save the current state of transformation (i.e. where are we now)
-    rotate(@theta) # Rotate by theta
-    branch(len)    # Ok, now call myself to draw two new branches!!
-    pop_matrix     # Whenever we get back here, we "pop" in order to restore the previous matrix state
-    # Repeat the same thing, only branch off to the "left" this time!
-    push_matrix
-    rotate(-@theta)
-    branch(len)
-    pop_matrix
-  end
+  return unless len > 2
+  push_matrix    # Save the current state of transformation (i.e. where are we now)
+  rotate(@theta) # Rotate by theta
+  branch(len)    # Ok, now call myself to draw two new branches!!
+  pop_matrix     # Whenever we get back here, we "pop" in order to restore the previous matrix state
+  # Repeat the same thing, only branch off to the "left" this time!
+  push_matrix
+  rotate(-@theta)
+  branch(len)
+  pop_matrix
 end

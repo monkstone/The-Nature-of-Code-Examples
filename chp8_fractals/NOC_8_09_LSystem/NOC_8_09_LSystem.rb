@@ -101,13 +101,12 @@ def draw
 end
 
 def mouse_pressed
-  if @counter < 5
-    push_matrix
-    @lsys.generate
-    @turtle.todo = @lsys.sentence
-    @turtle.change_len(0.5)
-    pop_matrix
-    redraw
-    @counter += 1
-  end
+  return if @counter >= 5
+  push_matrix
+  @lsys.generate
+  @turtle.todo = @lsys.sentence
+  @turtle.change_len(0.5)
+  pop_matrix
+  redraw
+  @counter += 1
 end

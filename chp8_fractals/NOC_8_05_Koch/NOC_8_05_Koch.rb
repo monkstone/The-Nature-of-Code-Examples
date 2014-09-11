@@ -41,6 +41,7 @@ class KochLine
   end
 
   private
+
   def rotate_line(v, theta)
     xtemp = v.x
     v.x = v.x * cos(theta.radians) - v.y * sin(theta.radians)
