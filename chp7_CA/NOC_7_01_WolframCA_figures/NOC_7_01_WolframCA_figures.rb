@@ -16,12 +16,12 @@ class CA
   end
 
   def randomize
-    @rulset = Array.new(@ruleset.size){ rand(2) }
+    @ruleset = Array.new(@ruleset.size){ rand(2) }
   end
 
   def generate
     nextgen = Array.new(@cells.size)
-    (1...@cells.size-1).each do |i|
+    (1 ... @cells.size - 1).each do |i|
       left = @cells[i-1]
       me = @cells[i]
       right = @cells[i+1]
@@ -44,12 +44,12 @@ class CA
         fill(255)
       end
       stroke(0)
-      rect(i*@scl, @generation*@scl, @scl, @scl)
+      rect(i * @scl, @generation * @scl, @scl, @scl)
     end
   end
 
   def finished(height)
-    @generation > height/@scl
+    @generation > height / @scl
   end
 end
 
@@ -64,8 +64,7 @@ def draw
   @ca.render
   @ca.generate
   if @ca.finished(height)
-    save_frame("rule222.png")
-    no_loop
+    save_frame('rule222.png')
   end
 end
 

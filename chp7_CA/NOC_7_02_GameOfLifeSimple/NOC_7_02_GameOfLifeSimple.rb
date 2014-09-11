@@ -3,8 +3,7 @@
 class GOL
   def initialize(width, height)
     @w = 8
-    @rows = height / @w
-    @cols = width / @w
+    @rows,  @cols = height / @w, width / @w
     puts "rows: #{@rows} - @cols #{@cols}"
     init
   end
@@ -17,15 +16,15 @@ class GOL
 
   def generate
     nextgen = Array.new(@cols) { Array.new(@rows) { 0 } }
-    (1...@cols-1).each do |x|
-      (1...@rows-1).each do |y|
+    (1 ... @cols-1).each do |x|
+      (1 ... @rows-1).each do |y|
         neighbors = 0
-        (-1..1).each do |i|
-          (-1..1).each do |j|
-            if @board[x+i][y+j] == nil
-              puts "x+i #{x+i} - y+j #{y+j}"
+        (-1 .. 1).each do |i|
+          (-1 .. 1).each do |j|
+            if @board[x + i][y + j] == nil
+              puts "x+i #{x + i} - y+j #{y + j}"
             end
-            neighbors += @board[x+i][y+j] if @board[x+i][y+j]
+            neighbors += @board[x + i][y + j] if @board[x + i][y + j]
           end
         end
 
@@ -34,11 +33,11 @@ class GOL
         neighbors -= @board[x][y]
 
         # rules of life
-        if @board[x][y] == 1 and neighbors <  2
+        if @board[x][y] == 1 && neighbors <  2
           nextgen[x][y] = 0            # Loneliness
-        elsif @board[x][y] == 1 and neighbors >  3
+        elsif @board[x][y] == 1 && neighbors >  3
           nextgen[x][y] = 0            # Overpopulation
-        elsif @board[x][y] == 0 and neighbors == 3
+        elsif @board[x][y] == 0 && neighbors == 3
           nextgen[x][y] = 1            # Reproduction
         else
           nextgen[x][y] = @board[x][y] # Stasis
@@ -57,7 +56,7 @@ class GOL
           fill(255)
         end
         stroke(0)
-        rect(i*@w, j*@w, @w, @w)
+        rect(i * @w, j * @w, @w, @w)
       end
     end
   end

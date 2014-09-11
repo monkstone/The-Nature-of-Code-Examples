@@ -3,11 +3,8 @@
 class Cell
   attr_reader :previous, :state
   def initialize(x, y, w)
-    @x = x
-    @y = y
-    @w = w
-
-    @state = rand(2).to_i
+    @x, @y, @w = x, y, w
+    @state = rand(2)
     @previous = @state
   end
 
@@ -20,11 +17,11 @@ class Cell
   end
 
   def display
-    if @previous == 0 and @state == 1
+    if @previous == 0 && @state == 1
       fill(0, 0, 255)
     elsif @state == 1
       fill(0)
-    elsif @previous == 1 and @state == 0
+    elsif @previous == 1 && @state == 0
       fill(255, 0, 0)
     else
       fill(255)
@@ -37,8 +34,7 @@ end
 class GOL
   def initialize(width, height)
     @w = 8
-    @columns = width/@w
-    @rows = height/@w
+    @columns, @rows = width / @w, height / @w
     init
   end
 
@@ -56,28 +52,26 @@ class GOL
         cell.save_previous
       end
     end
-
     # Loop through every spot in our 2D array and check spots neighbors
     @board.each_index do |x|
       @board[x].each_index do |y|
         # Add up all the states in a 3x3 surrounding grid
         neighbors = 0
-        (-1..1).each do |i|
-          (-1..1).each do |j|
-            neighbors += @board[(x+i+@columns) % @columns][(y+j+@rows) % @rows].previous
+        (-1 .. 1).each do |i|
+          (-1 .. 1).each do |j|
+            neighbors += @board[(x + i + @columns) % @columns][(y + j + @rows) % @rows].previous
           end
         end
         # A little trick to subtract the current cell's state since
         # we added it in the above loop
         neighbors -= @board[x][y].previous
-
         # Rules of Life
-        if @board[x][y].state == 1 and neighbors <  2
+        if @board[x][y].state == 1 && neighbors <  2
           @board[x][y].new_state(0)           # Loneliness
-        elsif @board[x][y].state == 1 and neighbors >  3
-          @board[x][y].new_state(0);           # Overpopulation
-        elsif @board[x][y].state == 0 and neighbors == 3
-          @board[x][y].new_state(1);           # Reproduction
+        elsif @board[x][y].state == 1 && neighbors >  3
+          @board[x][y].new_state(0)           # Overpopulation
+        elsif @board[x][y].state == 0 && neighbors == 3
+          @board[x][y].new_state(1)           # Reproduction
         end
       end
     end
@@ -99,7 +93,6 @@ end
 
 def draw
   background(255)
-
   @gol.generate
   @gol.display
 end

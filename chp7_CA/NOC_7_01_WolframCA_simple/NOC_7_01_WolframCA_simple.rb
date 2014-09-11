@@ -4,15 +4,15 @@ class CA
   attr_reader :w, :generation
   def initialize(width)
     @w = 10
-    @cells = Array.new(width/@w) { 0 }
-    @cells[@cells.size/2] = 1
+    @cells = Array.new(width / @w) { 0 }
+    @cells[@cells.size / 2] = 1
     @ruleset = [0, 1, 0, 1, 1, 0, 1, 0]
     @generation = 0
   end
 
   def generate
     nextgen = Array.new(@cells.size)
-    (1...@cells.size-1).each do |i|
+    (1 ... @cells.size-1).each do |i|
       left = @cells[i-1]
       me = @cells[i]
       right = @cells[i+1]
@@ -24,7 +24,7 @@ class CA
 
   def rules(a, b, c)
     idx = (a.to_s + b.to_s + c.to_s).to_i(2)
-    @ruleset[7-idx]
+    @ruleset[7 - idx]
   end
 
   def display
@@ -35,7 +35,7 @@ class CA
         fill(255)
       end
       no_stroke
-      rect(i*@w, @generation*@w, @w, @w)
+      rect(i * @w, @generation * @w, @w, @w)
     end
   end
 end
@@ -48,5 +48,5 @@ end
 
 def draw
   @ca.display
-  @ca.generate if @ca.generation < height/@ca.w
+  @ca.generate if @ca.generation < height / @ca.w
 end
