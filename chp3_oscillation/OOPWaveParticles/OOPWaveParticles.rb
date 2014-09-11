@@ -2,10 +2,12 @@
 # The Nature of Code
 # http://natureofcode.com
 
+Vect = Struct.new(:x, :y) # no fancy behaviour reqd we can use a struct here
+
 class Particle
 
   def initialize
-    @location = PVector.new
+    @location = Vect.new(0, 0)
   end
 
   def set_location(x, y)
@@ -22,7 +24,7 @@ end
 class Wave
 
   def initialize(o, w_, a, p)
-    @origin = o.get
+    @origin = o.dup
     @w = w_
     @period = p
     @amplitude = a
@@ -46,15 +48,15 @@ class Wave
 
   def display
     # A simple way to draw the wave with an ellipse at each location
-    @particles.each{ |p| p.display }
+    @particles.each { |p| p.display }
   end
 end
 
 def setup
   size(640, 360)
   # Initialize a wave with starting point, width, amplitude, and period
-  @wave0 = Wave.new(PVector.new(200, 75), 100, 20, 500)
-  @wave1 = Wave.new(PVector.new(150, 250), 300, 40, 220)
+  @wave0 = Wave.new(Vect.new(200, 75), 100, 20, 500)
+  @wave1 = Wave.new(Vect.new(150, 250), 300, 40, 220)
 end
 
 def draw

@@ -1,16 +1,16 @@
 # NOC_3_11_spring
 # The Nature of Code
 # http://natureofcode.com
+load_library :vecmath
 
 class Bob
-  attr_accessor :location
-  attr_reader :velocity
+  attr_accessor :location, :velocity
 
   def initialize(x, y)
-    @location = PVector.new(x,y)
-    @velocity = PVector.new
-    @acceleration = PVector.new
-    @drag_offset = PVector.new
+    @location = Vec2D.new(x,y)
+    @velocity = Vec2D.new
+    @acceleration = Vec2D.new
+    @drag_offset = Vec2D.new
     @dragging = false
     @damping = 0.98 # Arbitrary damping to simulate friction / drag
     @mass = 24
@@ -18,17 +18,16 @@ class Bob
 
   # Standard Euler integration
   def update
-    @velocity.add(@acceleration)
-    @velocity.mult(@damping)
-    @location.add(@velocity)
-    @acceleration.mult(0)
+    @velocity += @acceleration
+    @velocity *= @damping
+    @location += @velocity
+    @acceleration *= 0
   end
 
   # Newton's law: F = M * A
   def apply_force(force)
-    f = force.get
-    f.div(@mass)
-    @acceleration.add(f)
+    f = force / @mass
+    @acceleration += f
   end
 
   # Draw the bob
@@ -68,7 +67,7 @@ end
 class Spring
 
   def initialize(x, y, l)
-    @anchor = PVector.new(x, y)
+    @anchor = Vec2D.new(x, y)
     @len = l
     @k = 0.2
   end
@@ -76,35 +75,35 @@ class Spring
   # Calculate spring force
   def connect(bob)
     # Vector pointing from anchor to bob location
-    force = PVector.sub(bob.location, @anchor)
+    force = bob.location - @anchor
     d = force.mag
     # Stretch is difference between current distance and rest length
     stretch = d - @len
 
     # Calculate force according to Hooke's Law
     # F = k * stretch
-    force.normalize
-    force.mult(-1 * @k * stretch)
+    force.normalize!
+    force *= -1 * @k * stretch
     bob.apply_force(force)
   end
 
   # Constrain the distance between bob and anchor between min and max
   def constrain_length(bob, minlen, maxlen)
-    dir = PVector.sub(bob.location, @anchor)
+    dir = bob.location - @anchor
     d = dir.mag
     # Is it too short?
     if d < minlen
-      dir.normalize
-      dir.mult(minlen)
+      dir.normalize!
+      dir *= minlen
       # Reset location and stop from moving (not realistic physics)
-      bob.location = PVector.add(@anchor, dir)
-      bob.velocity.mult(0)
+      bob.location = @anchor + dir
+      bob.velocity *= 0
     elsif d > maxlen # is it too long?
-      dir.normalize
-      dir.mult(maxlen)
+      dir.normalize!
+      dir *= maxlen
       # Reset location and stop from moving (not realistic physics)
-      bob.location = PVector.add(@anchor, dir)
-      bob.velocity.mult(0)
+      bob.location = @anchor + dir
+      bob.velocity *= 0
     end
   end
 
@@ -135,7 +134,7 @@ end
 def draw
   background(255)
   # Apply a gravity force to the bob
-  gravity = PVector.new(0,2)
+  gravity = Vec2D.new(0,2)
   @bob.apply_force(gravity)
 
   # Connect the bob to the spring (this calculates the force)
@@ -153,7 +152,7 @@ def draw
   @spring.display
 
   fill(0)
-  text("click on bob to drag", 10, height-5)
+  text('click on bob to drag', 10, height - 5)
 end
 
 def mouse_pressed

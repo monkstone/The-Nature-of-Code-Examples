@@ -1,12 +1,14 @@
 # Exercise_3_16_springs_array
+load_library :vecmath
+
 class Bob
-  attr_reader :location
+  attr_reader :acceleration, :velocity, :location
 
   def initialize(x, y)
-    @location = PVector.new(x,y)
-    @velocity = PVector.new
-    @acceleration = PVector.new
-    @drag_offset = PVector.new
+    @location = Vec2D.new(x, y)
+    @velocity = Vec2D.new
+    @acceleration = Vec2D.new
+    @drag_offset = Vec2D.new
     @dragging = false
     @damping = 0.95 # Arbitrary damping to simulate friction / drag
     @mass = 12
@@ -14,17 +16,16 @@ class Bob
 
   # Standard Euler integration
   def update
-    @velocity.add(@acceleration)
-    @velocity.mult(@damping)
-    @location.add(@velocity)
-    @acceleration.mult(0)
+    @velocity += acceleration
+    @velocity *= @damping
+    @location += velocity
+    @acceleration *= 0
   end
 
   # Newton's law: F = M * A
   def apply_force(force)
-    f = force.get
-    f.div(@mass)
-    @acceleration.add(f)
+    f = force / @mass
+    @acceleration += f
   end
 
   # Draw the bob
@@ -33,16 +34,16 @@ class Bob
     stroke_weight(2)
     fill(175)
     fill(50) if @dragging
-    ellipse(@location.x, @location.y, @mass*2, @mass*2)
+    ellipse(location.x, location.y, @mass * 2, @mass * 2)
   end
 
   # This checks to see if we clicked on the mover
   def clicked(mx, my)
-    d = dist(mx, my, @location.x, @location.y)
+    d = dist(mx, my, location.x, location.y)
     if d < @mass
       @dragging = true
-      @drag_offset.x = @location.x-mx
-      @drag_offset.y = @location.y-my
+      @drag_offset.x = location.x - mx
+      @drag_offset.y = location.y - my
     end
   end
 
@@ -70,18 +71,17 @@ class Spring
   # Calculate spring force
   def update
     # Vector pointing from anchor to bob location
-    force = PVector.sub(@bob_a.location, @bob_b.location)
+    force = @bob_a.location - @bob_b.location
     # What is distance
     d = force.mag
     # Stretch is difference between current distance and rest length
     stretch = d - @len
-
     # Calculate force according to Hooke's Law
     # F = k * stretch
-    force.normalize
-    force.mult(-1 * @k * stretch)
+    force.normalize!
+    force *= -1 * @k * stretch
     @bob_a.apply_force(force)
-    force.mult(-1)
+    force *= -1
     @bob_b.apply_force(force)
   end
 
@@ -97,18 +97,16 @@ def setup
   size(640, 360)
   # Create objects at starting location
   # Note third argument in Spring constructor is "rest length"
-  @bobs = Array.new(5) { |i| Bob.new(width/2, i*40) }
-  @springs = Array.new(4) { |i| Spring.new(@bobs[i], @bobs[i+1], 40) }
+  @bobs = Array.new(5) { |i| Bob.new(width / 2, i * 40) }
+  @springs = Array.new(4) { |i| Spring.new(@bobs[i], @bobs[i + 1], 40) }
 end
 
 def draw
   background(255)
-
   @springs.each do |s|
     s.update
     s.display
   end
-
   @bobs.each do |b|
     b.update
     b.display

@@ -15,7 +15,7 @@ class Mover
 
   def update
     @velocity += @acceleration
-    @velocity.set_mag(@topspeed) {@velocity.mag_squared > @topspeed**2}
+    @velocity.set_mag(@topspeed) {@velocity.mag > @topspeed}
     @location += @velocity
   end
 
@@ -32,7 +32,6 @@ class Mover
     elsif @location.x < 0
       @location.x = width
     end
-
     if @location.y > height
       @location.y = 0
     elsif @location.y < 0

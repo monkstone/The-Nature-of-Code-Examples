@@ -1,26 +1,27 @@
 # ExtraOscillatingBody
 # The Nature of Code
 # http://natureofcode.com
+load_library :vecmath
 
 class Mover
   attr_reader :location, :mass
 
   def initialize
-    @location = PVector.new(400, 50)
-    @velocity = PVector.new(1, 0)
-    @acceleration = PVector.new(0, 0)
+    @location = Vec2D.new(400, 50)
+    @velocity = Vec2D.new(1, 0)
+    @acceleration = Vec2D.new(0, 0)
     @mass = 1
   end
 
   def apply_force(force)
-    f = PVector.div(force, @mass)
-    @acceleration.add(f)
+    f = force / @mass
+    @acceleration += f
   end
 
   def update
-    @velocity.add(@acceleration)
-    @location.add(@velocity)
-    @acceleration.mult(0)
+    @velocity += @acceleration
+    @location += @velocity
+    @acceleration *= 0
   end
 
   def display
@@ -29,7 +30,7 @@ class Mover
     fill(127)
     push_matrix
     translate(@location.x, @location.y)
-    heading = -1 * Math.atan2(-@velocity.y, @velocity.x)  #float angle = (float) Math.atan2(-y, x); return -1*angle;
+    heading = -1 * Math.atan2(-@velocity.y, @velocity.x)
     rotate(heading)
     ellipse(0, 0, 16, 16)
     rect_mode(CENTER)
@@ -57,20 +58,20 @@ class Attractor
   G = 1
 
   def initialize(width, height)
-    @location = PVector.new(width/2, height/2)
+    @location = Vec2D.new(width/2, height/2)
     @mass = 20
-    @drag_offset = PVector.new(0.0, 0.0)
+    @drag_offset = Vec2D.new(0.0, 0.0)
     @dragging = false
     @rollover = false
   end
 
   def attract(mover)
-    force = PVector.sub(@location, mover.location)   # Calculate direction of force
-    d = force.mag                                                           # Distance between objects
-    d = constrain(d, 5.0, 25.0)                                      # Limiting the distance to eliminate "extreme" results for very close or very far objects
-    force.normalize                                                        # Normalize vector (distance doesn't matter here, we just want this vector for direction)
+    force = @location - mover.location   # Calculate direction of force
+    d = force.mag                        # Distance between objects
+    d = constrain(d, 5.0, 25.0)          # Limiting the distance to eliminate "extreme" results for very close or very far objects
+    force.normalize!                     # Normalize vector (distance doesn't matter here, we just want this vector for direction)
     strength = (G * @mass * mover.mass) / (d * d)     # Calculate gravitional force magnitude
-    force.mult(strength)                                                #  Get force vector --> magnitude * direction
+    force *= strength                    #  Get force vector --> magnitude * direction
     force
   end
 
@@ -86,7 +87,7 @@ class Attractor
     else
       fill(175, 200)
     end
-    ellipse(@location.x, @location.y, @mass*2, @mass*2)
+    ellipse(@location.x, @location.y, @mass * 2, @mass * 2)
   end
 
   # The methods below are for mouse interaction
@@ -94,8 +95,8 @@ class Attractor
     d = dist(mx, my, @location.x, @location.y)
     if d < @mass
       @dragging = true
-      @drag_offset.x = @location.x-mx
-      @drag_offset.y = @location.y-my
+      @drag_offset.x = @location.x - mx
+      @drag_offset.y = @location.y - my
     end
   end
 
@@ -141,6 +142,6 @@ def mouse_pressed
   @a.clicked(mouse_x, mouse_y)
 end
 
-def mouseRrleased
+def mouse_released
   @a.stop_dragging
 end

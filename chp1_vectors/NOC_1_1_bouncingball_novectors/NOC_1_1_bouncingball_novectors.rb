@@ -4,8 +4,7 @@
 
 def setup
   size(800, 200)
-  smooth
-
+  smooth 4
   @x = 100
   @y = 100
   @xspeed = 2.5
@@ -14,14 +13,11 @@ end
 
 def draw
   background(255)
-
   # Add the current speed to the location.
   @x += @xspeed
   @y += @yspeed
-
   @xspeed = -@xspeed if @x > width or @x < 0
   @yspeed = -@yspeed if @y > height or @y < 0
-
   # Display circle at x location
   stroke(0)
   stroke_weight(2)

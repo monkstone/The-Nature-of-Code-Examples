@@ -7,11 +7,10 @@ load_library :vecmath
 class Mover
   TOP_SPEED = 6
   attr_reader :location, :velocity, :topspeed_squared
-  
+
   def initialize(width, height)
     @location = Vec2D.new(rand(width/2.0), rand(height/2.0))
     @velocity = Vec2D.new(0, 0)
-    @topspeed_squared = TOP_SPEED * TOP_SPEED
   end
 
   def update
@@ -19,9 +18,8 @@ class Mover
     acceleration = mouse - location
     acceleration.normalize!
     acceleration *= 0.2
-
     @velocity += acceleration
-    velocity.set_mag(TOP_SPEED) {velocity.mag_squared > topspeed_squared}
+    velocity.set_mag(TOP_SPEED) {velocity.mag > TOP_SPEED}
     @location += velocity
   end
 
@@ -40,7 +38,6 @@ end
 
 def draw
   background(255)
-
   @movers.each do |mover|
     mover.update
     mover.display

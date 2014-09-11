@@ -4,14 +4,15 @@
 
 # A Simple Pendulum Class
 # Includes functionality for user can click and drag the pendulum
+load_library :vecmath
+
 class Pendulum
 
   def initialize(origin_, r_)
-    @origin = origin_.get
-    @location = PVector.new
+    @origin = origin_.copy
+    @location = Vec2D.new
     @r = r_ # length of arm
-    @angle = PI/4
-
+    @angle = PI / 4
     @aVelocity = 0.0
     @aAcceleration = 0.0
     @damping = 0.995   # Arbitrary damping
@@ -27,19 +28,19 @@ class Pendulum
 
   def update
     # As long as we aren't dragging the pendulum, let it swing!
-    unless @dragging
-      gravity = 0.4                              # Arbitrary constant
-      @aAcceleration = (-1 * gravity / @r) * sin(@angle)  # Calculate acceleration (see: http://www.myphysicslab.com/pendulum1.html)
-      @aVelocity += @aAcceleration                 # Increment velocity
-      @aVelocity *= @damping                       # Arbitrary damping
-      @angle += @aVelocity                         # Increment angle
-    end
+    return if @dragging # using guard clause in place of conditional
+    gravity = 0.4                              # Arbitrary constant
+    # Calculate acceleration (see: http://www.myphysicslab.com/pendulum1.html)
+    @aAcceleration = (-1 * gravity / @r) * sin(@angle)
+    @aVelocity += @aAcceleration               # Increment velocity
+    @aVelocity *= @damping                     # Arbitrary damping
+    @angle += @aVelocity                       # Increment angle
   end
 
   def display
-    @location.set(@r*sin(@angle), @r*cos(@angle), 0)    # Polar to cartesian conversion
-    @location.add(@origin)                              # Make sure the location is relative to the pendulum's origin
-
+    # Polar to cartesian conversion
+    @location = Vec2D.new(@r * sin(@angle), @r * cos(@angle))
+    @location += @origin # Set location relative to the pendulum's origin
     stroke(0)
     stroke_weight(2)
     # Draw the arm
@@ -67,8 +68,8 @@ class Pendulum
     # pendulum origin and mouse location
     # we assign that angle to the pendulum
     if @dragging
-      diff = PVector.sub(@origin, PVector.new(mouse_x, mouse_y))
-      @angle = atan2(-1*diff.y, diff.x) - 90.radians   # Angle relative to vertical axis
+      diff = @origin - Vec2D.new(mouse_x, mouse_y)
+      @angle = atan2(-1 * diff.y, diff.x) - PI / 2 # Relative to vertical axis
     end
   end
 end
@@ -77,7 +78,7 @@ end
 def setup
   size(800, 200)
   # Make a new Pendulum with an origin location and armlength
-  @p = Pendulum.new(PVector.new(width/2, 0), 175)
+  @p = Pendulum.new(Vec2D.new(width/2, 0), 175)
 end
 
 def draw

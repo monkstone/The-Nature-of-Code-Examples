@@ -1,12 +1,13 @@
 # NOC_3_10_PendulumExampleSimplified
+load_library :vecmath
+
 class Pendulum
-
+  attr_reader :angle, :origin, :location
   def initialize(origin_, r_)
-    @origin = origin_.get
-    @location = PVector.new
+    @origin = origin_
+    @location = Vec2D.new
     @r = r_ # length of arm
-    @angle = PI/4
-
+    @angle = PI / 4
     @aVelocity = 0.0
     @aAcceleration = 0.0
     @damping = 0.995   # Arbitrary damping
@@ -18,25 +19,26 @@ class Pendulum
   end
 
   def update
-    gravity = 0.4                              # Arbitrary constant
-    @aAcceleration = (-1 * gravity / @r) * sin(@angle)  # Calculate acceleration (see: http://www.myphysicslab.com/pendulum1.html)
+    gravity = 0.4                                # Arbitrary constant
+    # Calculate acceleration (see: http://www.myphysicslab.com/pendulum1.html)
+    @aAcceleration = (-1 * gravity / @r) * sin(angle)
     @aVelocity += @aAcceleration                 # Increment velocity
     @aVelocity *= @damping                       # Arbitrary damping
     @angle += @aVelocity                         # Increment angle
   end
 
   def display
-    @location.set(@r*sin(@angle), @r*cos(@angle), 0)    # Polar to cartesian conversion
-    @location.add(@origin)                              # Make sure the location is relative to the pendulum's origin
-
+    # Polar to cartesian conversion
+    @location = Vec2D.new(@r * sin(angle), @r * cos(angle))
+    @location += origin # Set the location is relative to the pendulum's origin
     stroke(0)
     stroke_weight(2)
     # Draw the arm
-    line(@origin.x, @origin.y, @location.x, @location.y)
+    line(origin.x, origin.y, location.x, location.y)
     ellipse_mode(CENTER)
     fill(175)
     # Draw the ball
-    ellipse(@location.x, @location.y, 48, 48)
+    ellipse(location.x, location.y, 48, 48)
   end
 end
 
@@ -44,7 +46,8 @@ end
 def setup
   size(800, 200)
   # Make a new Pendulum with an origin location and armlength
-  @p = Pendulum.new(PVector.new(width/2, 0), 175)
+  @p = Pendulum.new(Vec2D.new(width / 2, 0), 175)
+  smooth 4
 end
 
 def draw

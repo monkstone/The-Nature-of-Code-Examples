@@ -11,16 +11,13 @@ def setup
   @xspacing = 8      #  How far apart should each horizontal location be spaced
   @maxwaves = 5      # total # of waves to add together
   @theta = 0.0
-
   @amplitudes = Array.new(@maxwaves) do |amplitude| # Height of wave
     amplitude = rand(10 .. 30)
   end
-
   @dx = Array.new(@maxwaves) do |x|     # Value for incrementing X, to be calculated as a function of period and xspacing
     period = rand(100 .. 300)            # How many pixels before the wave repeats
     (TWO_PI / period) * @xspacing
   end
-
   @yvalues = Array.new(@w/@xspacing)
 end
 
@@ -34,16 +31,14 @@ end
 def calc_wave
   # Increment theta (try different values for 'angular velocity' here
   @theta += 0.02
-
   # Set all height values to zero
   @yvalues.each_index{ |i| @yvalues[i] = 0 }
-
   # Accumulate wave height values
   (0...@maxwaves).each do |j|
     x = @theta
     @yvalues.each_index do |i|
       # Every other wave is cosine instead of sine
-      if j % 2 == 0
+      if j.even?
         @yvalues[i] += sin(x) * @amplitudes[j]
       else
         @yvalues[i] += cos(x) * @amplitudes[j]
@@ -58,5 +53,5 @@ def render_wave
   stroke(0)
   fill(127, 50)
   ellipse_mode(CENTER)
-  @yvalues.each_with_index { |yvalue, idx| ellipse(idx*@xspacing, height/2+yvalue, 48, 48) }
+  @yvalues.each_with_index { |yvalue, idx| ellipse(idx * @xspacing, height / 2 + yvalue, 48, 48) }
 end

@@ -7,27 +7,23 @@
 load_library :vecmath
 
 def setup
-  size(800, 200)
-  smooth
+  size 800, 200
+  smooth 4
 end
 
 def draw
   background(255)
-
   # A vector that points to the mouse location
   mouse = Vec2D.new(mouse_x, mouse_y)
   # A vector that points to the center of the window
-  center = Vec2D.new(width/2, height/2)
+  center = Vec2D.new(width / 2, height / 2)
   # Subtract center from mouse which results in a vector that points from center to mouse
   mouse -= center
-
   # Normalize the vector
   mouse.normalize!
-
   # Multiply its length by 50
   mouse *= 50
-
-  translate(width/2, height/2)
+  translate(width / 2, height / 2)
   # Draw the resulting vector
   stroke(0)
   stroke_weight(2)

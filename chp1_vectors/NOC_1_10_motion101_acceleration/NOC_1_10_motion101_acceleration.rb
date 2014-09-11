@@ -15,9 +15,8 @@ class Mover
     acceleration = mouse - @location
     acceleration.normalize!
     acceleration *= 0.2
-
     @velocity += acceleration
-    @velocity.set_mag(@topspeed) {@velocity.mag_squared > @topspeed**2}
+    @velocity.set_mag(@topspeed) {@velocity.mag > @topspeed}
     @location += @velocity
   end
 
@@ -37,7 +36,6 @@ end
 
 def draw
   background(255)
-
   @mover.update
   @mover.display
 end

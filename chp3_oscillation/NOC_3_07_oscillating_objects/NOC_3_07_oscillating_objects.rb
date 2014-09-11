@@ -2,45 +2,21 @@
 # The Nature of Code
 # http://natureofcode.com
 
-class Oscillator
+load_library :vecmath
+require_relative 'oscillator'
 
-  def initialize(width, height)
-    @angle = PVector.new
-    @velocity = PVector.new(rand(-0.05, 0.05), rand(-0.05, 0.05))
-    @amplitude = PVector.new(rand(20 ..  width/2), rand(20 ..  height/2))
-  end
+attr_reader :oscillators
 
-  def oscillate
-    @angle.add(@velocity)
-  end
-
-  def display(width, height)
-    x = sin(@angle.x)*@amplitude.x
-    y = sin(@angle.y)*@amplitude.y
-
-    push_matrix
-    translate(width/2, height/2)
-    stroke(0)
-    stroke_weight(2)
-    fill(127, 127)
-    line(0, 0, x, y)
-    ellipse(x, y, 32, 32)
-    pop_matrix
-  end
-end
-
-# NOC_3_07_oscillating_objects
 def setup
-  size(800, 200)
-  smooth
+  size 800, 200
+  smooth 4
   @oscillators = Array.new(10) { Oscillator.new(width, height) }
-  background(255)
 end
 
 def draw
-  background(255)
-  @oscillators.each do |o|
+  background 255
+  oscillators.each do |o|
     o.oscillate
-    o.display(width, height)
+    o.display
   end
 end

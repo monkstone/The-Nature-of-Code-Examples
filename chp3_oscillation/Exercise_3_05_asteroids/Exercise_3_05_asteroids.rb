@@ -2,40 +2,38 @@
 # The Nature of Code
 # http://natureofcode.com
 # Chapter 3: Asteroids
+load_library :vecmath
 
 class Spaceship
 
   def initialize(width, height)
-    @location = PVector.new(width/2, height/2)
-    @velocity = PVector.new
-    @acceleration = PVector.new
+    @location = Vec2D.new(width / 2, height / 2)
+    @velocity = Vec2D.new
+    @acceleration = Vec2D.new
     @damping = 0.995
     @topspeed = 6
-
     # Variable for heading!
     @heading = 0
-
     # Size
     @r = 16
-
     # Are we thrusting (to color boosters)
     @thrusting = false
   end
 
   # Standard Euler integration
   def update
-    @velocity.add(@acceleration)
-    @velocity.mult(@damping)
-    @velocity.limit(@topspeed)
-    @location.add(@velocity)
-    @acceleration.mult(0)
+    @velocity += @acceleration
+    @velocity *= @damping
+    @velocity.set_mag(@topspeed) {@velocity.mag > @topspeed}
+    @location += @velocity
+    @acceleration *= 0
   end
 
   # Newton's law: F = M * A
   def apply_force(force)
-    f = force.get
+    #f = force.copy
     #f.div(mass); # ignoring mass right now
-    @acceleration.add(f)
+    @acceleration += force
   end
 
   # Turn changes angle
@@ -46,17 +44,17 @@ class Spaceship
   # Apply a thrust force
   def thrust
     # Offset the angle since we drew the ship vertically
-    angle = @heading - PI/2
+    angle = @heading - PI / 2
     # Polar to cartesian for force vector!
-    force = PVector.new(cos(angle), sin(angle))
-    force.mult(0.1)
+    force = Vec2D.new(cos(angle), sin(angle))
+    force *= 0.1
     apply_force(force)
     # To draw booster
     @thrusting = true
   end
 
   def wrap_edges(width, height)
-    buffer = @r*2
+    buffer = @r * 2
     if @location.x > width +  buffer
       @location.x = -buffer
     elsif @location.x < -buffer
@@ -75,23 +73,22 @@ class Spaceship
     stroke(0)
     stroke_weight(2)
     push_matrix
-    translate(@location.x, @location.y+@r)
+    translate(@location.x, @location.y + @r)
     rotate(@heading)
     fill(175)
     fill(255,0,0) if @thrusting
     # Booster rockets
-    rect(-@r/2, @r, @r/3, @r/2)
-    rect(@r/2, @r, @r/3, @r/2)
+    rect(-@r / 2, @r, @r / 3, @r / 2)
+    rect(@r / 2, @r, @r / 3, @r / 2)
     fill(175)
     # A triangle
     begin_shape
     vertex(-@r, @r)
-    vertex(0,-@r)
+    vertex(0, -@r)
     vertex(@r, @r)
     end_shape(CLOSE)
     rect_mode(CENTER)
     pop_matrix
-
     @thrusting = false
   end
 end
@@ -104,22 +101,20 @@ end
 
 def draw
   background(255)
-
   # Update location
   @ship.update
-  # Wrape edges
+  # Wrap edges
   @ship.wrap_edges(width, height)
   # Draw ship
   @ship.display
-
   fill(0)
-  #text("left right arrows to turn, z to thrust", 10, height-5)
+  text('left right arrows to turn, z to thrust', 10, height - 5)
 end
 
 def key_pressed
-  if key == CODED and key_code == LEFT
-      @ship.turn(-0.03)
-  elsif key == CODED and key_code == RIGHT
+  if key == CODED && key_code == LEFT
+    @ship.turn(-0.03)
+  elsif key == CODED && key_code == RIGHT
     @ship.turn(0.03)
   elsif key == 'z' or key == 'Z'
     @ship.thrust

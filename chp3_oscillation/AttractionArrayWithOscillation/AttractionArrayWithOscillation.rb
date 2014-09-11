@@ -3,6 +3,7 @@
 # http://natureofcode.com
 
 # Attraction Array with Oscillating objects around each thing
+load_library :vecmath
 
 class Oscillator
 
@@ -11,13 +12,12 @@ class Oscillator
     @amplitude = r
   end
 
-  def update(thetaVel)
-    @theta += thetaVel
+  def update(angle)
+    @theta += angle
   end
 
   def display
-    x = map(cos(@theta), -1, 1, 0, @amplitude)
-
+    x = map1d(cos(@theta), (-1 .. 1.0), (0 .. @amplitude))
     stroke(0)
     fill(50)
     line(0, 0, x, 0)
@@ -26,43 +26,42 @@ class Oscillator
 end
 
 class Crawler
-  attr_reader :loc, :mass
+  attr_reader :loc, :mass, :acc, :vel
 
   def initialize(width, height)
-    @acc = PVector.new
-    @vel = PVector.new(rand(-1.0 .. 1), rand(-1.0 .. 1))
-    @loc = PVector.new(rand(width), rand(height))
-    @mass = rand(8 ..  16)
-    @osc = Oscillator.new(@mass*2)
+    @acc = Vec2D.new
+    @vel = Vec2D.new(rand(-1.0 .. 1), rand(-1.0 .. 1))
+    @loc = Vec2D.new(rand(width), rand(height))
+    @mass = rand(8.0 ..  16)
+    @osc = Oscillator.new(mass * 2)
   end
 
   def apply_force(force)
-    f = force.get
-    f.div(@mass)
-    @acc.add(f)
+    f = force.copy
+    f /= mass
+    @acc += f
   end
 
   # Method to update location
   def update
-    @vel.add(@acc)
-    @loc.add(@vel)
+    @vel += acc
+    @loc += vel
     # Multiplying by 0 sets the all the components to 0
-    @acc.mult(0)
+    @acc *= 0
 
-    @osc.update(@vel.mag/10)
+    @osc.update(vel.mag / 10)
   end
 
   # Method to display
   def display
-    angle = @vel.heading2D
+    angle = vel.heading
     push_matrix
-    translate(@loc.x, @loc.y)
+    translate(loc.x, loc.y)
     rotate(angle)
     ellipse_mode(CENTER)
     stroke(0)
     fill(175, 100)
-    ellipse(0, 0, @mass*2, @mass*2)
-
+    ellipse(0, 0, mass * 2, mass * 2)
     @osc.display
     pop_matrix
   end
@@ -70,11 +69,11 @@ end
 
 class Attractor
 
-  def initialize(l_, m_, g_)
-    @loc = l_.get
-    @mass = m_
-    @g = g_
-    @drag = PVector.new(0.0, 0.0)
+  def initialize(opts = {})
+    @loc = opts[:location].copy
+    @mass = opts[:mass]
+    @g = opts[:force]
+    @drag = Vec2D.new(0.0, 0.0)
     @dragging = false
     @rollover = false
   end
@@ -85,37 +84,36 @@ class Attractor
   end
 
   def attract(crawler)
-    dir = PVector.sub(@loc, crawler.loc)        # Calculate direction of force
-    d = dir.mag                                 # Distance between objects
-    d = constrain(d, 5.0, 25.0)                 # Limiting the distance to eliminate "extreme" results for very close or very far objects
-    dir.normalize                                # Normalize vector (distance doesn't matter here, we just want this vector for direction)
+    dir = @loc - crawler.loc                      # Calculate direction of force
+    d = dir.mag                                   # Distance between objects
+    d = constrain(d, 5.0, 25.0)                   # Limiting the distance to eliminate "extreme" results for very close or very far objects
+    dir.normalize!                                # Normalize vector (distance doesn't matter here, we just want this vector for direction)
     force = (@g * @mass * crawler.mass) / (d * d) # Calculate gravitional force magnitude
-    dir.mult(force)                               # Get force vector --> magnitude * direction
+    dir *= force                                  # Get force vector --> magnitude * direction
     dir
   end
 
   # Method to display
   def render
     ellipse_mode(CENTER)
-    stroke(0, 100)
+    stroke 0, 100
     if @dragging
-      fill (50)
+      fill 50
     elsif @rollover
-      fill(100)
+      fill 100
     else
-      fill(175, 50)
+      fill 175, 50
     end
-
-    ellipse(@loc.x, @loc.y, @mass*2, @mass*2)
+    ellipse(@loc.x, @loc.y, @mass * 2, @mass * 2)
   end
 
   # The methods below are for mouse interaction
   def clicked(mx, my)
-    d = dist(mx, my,@loc.x,@loc.y)
+    d = dist(mx, my, @loc.x, @loc.y)
     if d < @mass
       @dragging = true
-      @drag.x = @loc.x-mx
-      @drag.y = @loc.y-my
+      @drag.x = @loc.x - mx
+      @drag.y = @loc.y - my
     end
   end
 
@@ -142,7 +140,7 @@ def setup
   # Some rand bodies
   @crawlers = Array.new(5){ Crawler.new(width, height) }
   # Create an attractive body
-  @a = Attractor.new(PVector.new(width/2, height/2), 20, 0.4)
+  @a = Attractor.new(location: Vec2D.new(width / 2, height / 2), mass: 20, force: 0.4)
 end
 
 def draw

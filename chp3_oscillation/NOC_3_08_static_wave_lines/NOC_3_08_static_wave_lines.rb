@@ -12,8 +12,8 @@ stroke_weight(2)
 no_fill
 
 begin_shape
-(0..width).step(5) do |x|
-  y = map(sin(angle), -1, 1, 0, height)
+(0 .. width).step(5) do |x|
+  y = map1d(sin(angle), (-1 .. 1.0), (0 .. height))
   vertex(x, y)
   angle += angle_vel
 end
