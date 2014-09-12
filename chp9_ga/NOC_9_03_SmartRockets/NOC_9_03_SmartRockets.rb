@@ -118,7 +118,7 @@ class Population
     # Clear the ArrayList
     @mating_pool.clear
     # Calculate total fitness of whole population
-    max_fitness = @population.max { |a, b| a.fitness <=> b.fitness }.fitness
+    max_fitness = @population.max_by { |x| x.fitness }.fitness
     # Calculate fitness for each member of the population (scaled to value
     # between 0 and 1). Based on fitness, each member will get added to the
     # mating pool a certain number of times. A higher fitness = more entries
@@ -159,7 +159,7 @@ end
 # the only difference is that it has DNA & fitness
 
 class Rocket
-  attr_reader :fitness, :dna, :hit_target, :stopped
+  attr_reader :acceleration, :dna, :hit_target, :stopped, :location, :velocity
 
   def initialize(l, dna_, total_rockets)
     @acceleration = Vec2D.new
@@ -195,8 +195,8 @@ class Rocket
   # If I'm stuck, don't bother updating or checking for intersection
   def run(obstacles)
     unless stopped || hit_target
-      apply_force(@dna.genes[@gene_counter])
-      @gene_counter = (@gene_counter + 1) % @dna.genes.size
+      apply_force(dna.genes[@gene_counter])
+      @gene_counter = (@gene_counter + 1) % dna.genes.size
       update
       # If I hit an edge or an obstacle
       obstacles(obstacles)
@@ -207,9 +207,9 @@ class Rocket
 
   # Did I make it to the target?
   def check_target(target)
-    d = @location.dist(target.location)
+    d = location.dist(target.location)
     @record_dist = d if d < @record_dist
-    if target.contains(@location) && !hit_target
+    if target.contains(location) && !hit_target
       @hit_target = true
     elsif !hit_target
       @finish_time += 1
@@ -218,7 +218,7 @@ class Rocket
 
   # Did I hit an obstacle?
   def obstacles(obstacles)
-    obstacles.each { |o| @stopped = true if o.contains(@location) }
+    obstacles.each { |o| @stopped = true if o.contains(location) }
   end
 
   def apply_force(f)
@@ -226,26 +226,24 @@ class Rocket
   end
 
   def update
-    @velocity += @acceleration
-    @location += @velocity
+    @velocity += acceleration
+    @location += velocity
     @acceleration *= 0
   end
 
   def display
-    theta = @velocity.heading + PI / 2
+    theta = velocity.heading + PI / 2
     fill(200, 100)
     stroke(0)
     stroke_weight(1)
     push_matrix
-    translate(@location.x, @location.y)
+    translate(location.x, location.y)
     rotate(theta)
-
     # Thrusters
     rect_mode(CENTER)
     fill(0)
     rect(-@r / 2, @r * 2, @r / 2, @r)
     rect(@r / 2, @r * 2, @r / 2, @r)
-
     # Rocket body
     fill(175)
     begin_shape(TRIANGLES)
@@ -253,7 +251,6 @@ class Rocket
     vertex(-@r, @r * 2)
     vertex(@r, @r * 2)
     end_shape
-
     pop_matrix
   end
 end
@@ -273,17 +270,13 @@ def setup
   size(640, 360)
   # The number of cycles we will allow a generation to live
   @lifetime = 300
-
   # Initialize variables
   @lifecycle = 0
   @recordtime = @lifetime
-
   @target = Obstacle.new(width / 2 - 12, 24, 24, 24)
-
   # Create a population with a mutation rate, and population max
   @mutation_rate = 0.01
   @population = Population.new(@mutation_rate, 50, width, height)
-
   # Create the obstacle course
   @obstacles = []
   @obstacles << Obstacle.new(width / 2 - 100, height / 2, 200, 10)

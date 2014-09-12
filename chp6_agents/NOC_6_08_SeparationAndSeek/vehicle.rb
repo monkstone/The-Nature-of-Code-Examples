@@ -6,8 +6,8 @@ class Vehicle
     @r = 12
     @maxspeed = 3
     @maxforce = 0.2
-    @acceleration = Vec2D.new(0, 0)
-    @velocity = Vec2D.new(0, 0)
+    @acceleration = Vec2D.new
+    @velocity = Vec2D.new
   end
 
   def apply_force(force)
@@ -39,21 +39,19 @@ class Vehicle
     vehicles.each do |other|
       next if other.equal? self
       d = location.dist(other.location)
-      if (PConstants.EPSILON .. desired_separation).include? d
-        diff = location - other.location
-        diff.normalize!
-        diff /= d
-        sum += diff
-        count += 1
-      end
+      next unless (PConstants.EPSILON .. desired_separation).include? d
+      diff = location - other.location
+      diff.normalize!
+      diff /= d
+      sum += diff
+      count += 1
     end
-    if count > 0
-      sum /= count
-      sum.normalize!
-      sum *= @maxspeed
-      steer = sum + velocity
-      steer.set_mag(@maxforce) { steer.mag > @maxforce }
-    end
+    return sum if count == 0
+    sum /= count
+    sum.normalize!
+    sum *= @maxspeed
+    steer = sum + velocity
+    steer.set_mag(@maxforce) { steer.mag > @maxforce }
     sum
   end
 
@@ -68,15 +66,15 @@ class Vehicle
     fill(175)
     stroke(0)
     push_matrix
-    translate(@location.x, @location.y)
+    translate(location.x, location.y)
     ellipse(0, 0, @r, @r)
     pop_matrix
   end
 
   def borders(width, height)
-    @location.x = width + @r if @location.x < -@r
-    @location.y = height + @r if @location.y < -@r
-    @location.x = -@r if @location.x > width + @r
-    @location.y = -@r if @location.y < -@r
+    @location.x = width + @r if location.x < -@r
+    @location.y = height + @r if location.y < -@r
+    @location.x = -@r if location.x > width + @r
+    @location.y = -@r if location.y < -@r
   end
 end

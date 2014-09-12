@@ -4,14 +4,14 @@ class CA
   def initialize(r, width)
     @ruleset = r
     @scl = 20
-    @cells = Array.new(width/@scl)
+    @cells = Array.new(width / @scl)
     @generation = 0
     restart
   end
 
   def restart
     @cells = Array.new(@cells.size) { 0 }
-    @cells[@cells.size/2] = 1
+    @cells[@cells.size / 2] = 1
     @generation = 0
   end
 
@@ -22,9 +22,9 @@ class CA
   def generate
     nextgen = Array.new(@cells.size)
     (1 ... @cells.size - 1).each do |i|
-      left = @cells[i-1]
+      left = @cells[i - 1]
       me = @cells[i]
-      right = @cells[i+1]
+      right = @cells[i + 1]
       nextgen[i] = rules(left, me, right)
     end
     @cells = nextgen

@@ -16,8 +16,8 @@ class GOL
 
   def generate
     nextgen = Array.new(@cols) { Array.new(@rows) { 0 } }
-    (1 ... @cols-1).each do |x|
-      (1 ... @rows-1).each do |y|
+    (1 ... @cols - 1).each do |x|
+      (1 ... @rows - 1).each do |y|
         neighbors = 0
         (-1 .. 1).each do |i|
           (-1 .. 1).each do |j|
@@ -27,11 +27,9 @@ class GOL
             neighbors += @board[x + i][y + j] if @board[x + i][y + j]
           end
         end
-
         # A little trick to subtract the current cell's state since
         # we added it in the loop above
         neighbors -= @board[x][y]
-
         # rules of life
         if @board[x][y] == 1 && neighbors <  2
           nextgen[x][y] = 0            # Loneliness
@@ -70,7 +68,6 @@ end
 
 def draw
   background(255)
-
   @gol.generate
   @gol.display
 end

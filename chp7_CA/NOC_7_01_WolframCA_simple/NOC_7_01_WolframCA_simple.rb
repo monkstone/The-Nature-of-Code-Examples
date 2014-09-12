@@ -12,10 +12,10 @@ class CA
 
   def generate
     nextgen = Array.new(@cells.size)
-    (1 ... @cells.size-1).each do |i|
-      left = @cells[i-1]
+    (1 ... @cells.size - 1).each do |i|
+      left = @cells[i - 1]
       me = @cells[i]
-      right = @cells[i+1]
+      right = @cells[i + 1]
       nextgen[i] = rules(left, me, right)
     end
     @cells = nextgen
