@@ -33,7 +33,7 @@ end
 
 def branch(h)
   # thickness of the branch is mapped to its length
-  sw = map(h, 2, 120, 1, 5)
+  sw = map1d(h, (2 .. 120), (1 .. 5))
   stroke_weight(sw)
   # Draw the actual branch
   line(0, 0, 0, -h)

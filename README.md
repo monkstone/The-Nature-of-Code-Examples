@@ -1,17 +1,17 @@
 #The-Nature-of-Code-Examples
 
 A ruby port of the [examples][] from [The Nature of Code][] by Daniel Shiffman.
-
+In this fork PVector has been replaced by Vec2D, Vec3D or a lighweight alternative. Processing map has been replaced by rub-processings map1d.
 
 Although many of the sketches here stand on their own merit, you should remember that they were originally designed to illustrate the book (so to get the most from them you should definetly [get the book][]). Since the sketches have been translated to a more idiomatic ruby, some of the sketches may not exactly match the points made in the book. However such sketches do serve to demonstrate the differences between processing and ruby-processing. Since the book is now also available in [Japanese][] it would be great if someone would fork this and add Japanese annotations.
 
-## Tested versions 
+## Tested versions
 
-ruby 2.0
+ruby 2.1 (note syntax clamped to 1.9.3 for jruby)
 
-jruby-1.7.11
+jruby-1.7.15
 
-ruby-processing version 2.4+
+ruby-processing version 2.6.3
 
 
 [The Nature of Code]:http://natureofcode.com
