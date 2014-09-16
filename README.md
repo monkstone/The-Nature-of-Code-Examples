@@ -1,4 +1,4 @@
-#The-Nature-of-Code-Examples
+#The-Nature-of-Code-Examples-in-Ruby
 
 A ruby port of the [examples][] from [The Nature of Code][] by Daniel Shiffman.
 In this fork PVector has been replaced by Vec2D, Vec3D or a lighweight alternative. Processing map has been replaced by ruby-processings map1d.
