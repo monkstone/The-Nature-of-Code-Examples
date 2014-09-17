@@ -3,13 +3,13 @@
 # world = World.new((0..width), (0..height))
 # world.constrain_mover(mover)
 class World
-  attr_reader :xrange, :yrange, :boundary_x, :boundary_y
+  attr_reader :xrange, :yrange
 
   def initialize(xrange, yrange)
     @xrange, @yrange = xrange, yrange
   end
 
-  # @param mover is expected respond loc, vel
+  # @param mover is expected respond to loc, vel
   # that in turn respond to x and y getter/setters (Vec2D does this)
 
   def constrain_mover(mover)
