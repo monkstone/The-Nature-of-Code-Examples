@@ -3,6 +3,8 @@
 # http://natureofcode.com
 # Collisions
 
+require_relative 'world'
+
 def draw_vector(app, v, loc, scayl)
   app.push_matrix
   arrowsize = 4
@@ -22,15 +24,18 @@ def draw_vector(app, v, loc, scayl)
   app.pop_matrix
 end
 
+# Class knows where it is loc (Vec2D)
+# and where it is going vel (Vec2D)
+# but also needs to know how to show itself app (Applet)
 class Mover
   attr_accessor :vel
-  attr_reader :bounce, :colliding, :loc, :r, :app
+  attr_reader :world, :colliding, :loc, :r, :app
 
   def initialize(app, v, l)
     @app = app
     @vel = v.copy
     @loc = l.copy
-    @bounce = 1.0
+    @world = World.new((0..app.width), (0..app.height))
     @r = 20
     @colliding = false
   end
@@ -49,20 +54,7 @@ class Mover
 
   # Check for bouncing off borders
   def borders
-    if loc.y > app.height
-      vel.y *= -bounce
-      loc.y = app.height
-    elsif loc.y < 0
-      vel.y *= -bounce
-      loc.y = 0
-    end
-    if loc.x > app.width
-      vel.x *= -bounce
-      loc.x = app.width
-    elsif loc.x < 0
-      vel.x *= -bounce
-      loc.x = 0
-    end
+    world.constrain_mover(self)
   end
 
   # Method to display
