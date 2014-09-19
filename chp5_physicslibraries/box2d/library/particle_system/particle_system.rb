@@ -5,14 +5,25 @@ module PS
   include_package 'shiffman.box2d'
 
   # Box2D Particle System
-  # <http://www.shiffman.net/teaching/nature>
-  # Spring 2010
-  # translated to ruby-processing Martin Prout
-  
   # A class to describe a group of Particles
   # An Array is used to manage the list of Particles 
+  require 'forwardable'
+  
+  module Runnable
+    def run
+      # Display all the particles
+      self.each(&:display)
+      # Particles that leave the screen, we delete them
+      # (note they have to be deleted from both the box2d world and our list
+      self.reject!(&:done)
+    end
+  end
   
   class ParticleSystem
+    extend Forwardable
+    def_delegators(:@particles, :each, :<<, :reject!, :empty?)
+    def_delegator(:@particles, :empty?, :dead?)
+    include Enumerable, Runnable
     
     attr_reader :particles, :x, :y
     
@@ -20,29 +31,15 @@ module PS
       @particles = []          # Initialize the Array
       @x, @y = x, y            # Store the origin point  
       num.times do
-        particles << PS::Particle.new(bd, x, y)
+        self << PS::Particle.new(bd, x, y)
       end
-    end
-    
-    def run
-      # Display all the particles
-      particles.each(&:display)
-      # Particles that leave the screen, we delete them
-      # (note they have to be deleted from both the box2d world and our list
-      particles.reject!(&:done)
     end
     
     def add_particles(bd, n)
       n.times do
-        particles << PS::Particle.new(bd, x, y)
+        self << PS::Particle.new(bd, x, y)
       end
-    end
-    
-    # A method to test if the particle system still has particles
-    def dead  
-      particles.empty?
-    end
-    
+    end    
   end
   
   # The Nature of Code
