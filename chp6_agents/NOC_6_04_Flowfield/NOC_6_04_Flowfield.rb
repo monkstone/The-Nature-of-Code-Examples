@@ -1,3 +1,4 @@
+
 # The Nature of Code
 # NOC_6_04_Flowfield
 load_library :vecmath
@@ -14,7 +15,7 @@ class FlowField
       yoff = 0
       xoff += 1
       Array.new(@rows) do
-        theta = map1d(noise(xoff, yoff), (0 .. 1), (0 .. TWO_PI))
+        theta = map1d(noise(xoff, yoff), (0..1), (0..TWO_PI))
         yoff += 1
         Vec2D.new(cos(theta), sin(theta))
       end
@@ -40,8 +41,8 @@ class FlowField
   end
 
   def lookup(vector)
-    column = constrain(vector.x / @resolution, 0, @cols - 1)
-    row = constrain(vector.y / @resolution, 0, @rows - 1)
+    column = (0..@cols - 1).clip(vector.x / @resolution)
+    row = (0..@rows - 1).clip(vector.y / @resolution)
     @field[column][row].copy
   end
 end
@@ -117,8 +118,8 @@ def setup
   @vehicles = Array.new(120) do
     Vehicle.new(
       Vec2D.new(rand(width), rand(height)),
-      rand(2.0 .. 5),
-      rand(0.1 .. 0.5),
+      rand(2.0..5),
+      rand(0.1..0.5),
       self
     )
   end
