@@ -1,20 +1,16 @@
-# The Nature of Code
-# Updated to use the updated library
-# Box2DProcessing example
-
-load_libraries :box2d_processing, :particle_system
-# module PS is a wrapper for java packages, and Boundary and Particle classes
-include PS
+require 'pbox2d'
+require_relative 'lib/particle_system'
 attr_reader :box2d, :boundaries, :systems
 
+include ContactListener
+
 def setup
-  size(400, 300)
-  smooth 4
-  # Initialize box2d physics and create the world
-  @box2d = PS::Box2DProcessing.new(self)
-  box2d.create_world
+  size(400,300)
+  @box2d = Box2D.new(self)
+  box2d.create_world  
   # We are setting a custom gravity
-  box2d.set_gravity(0, -20)
+  box2d.gravity(0, -20)
+
   # Create Arrays
   @systems = []
   @boundaries = []
@@ -25,8 +21,6 @@ end
 
 def draw
   background(255)
-  # We must always step through time!
-  box2d.step
   # Run all the particle systems
   if systems.size > 0
     systems.each do |system|
@@ -42,3 +36,5 @@ def mouse_pressed
   # Add a new Particle System whenever the mouse is clicked
   systems << ParticleSystem.new(box2d, 0, mouse_x, mouse_y)
 end
+
+

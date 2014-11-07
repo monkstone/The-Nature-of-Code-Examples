@@ -2,18 +2,19 @@
 # PBox2D example
 # An uneven surface
 
-load_libraries :box2d_processing, :surface
-include SB
+require 'pbox2d'
+require_relative 'lib/surface'
+
 attr_reader :surface, :box2d, :particles
 
 def setup
   size(500, 300)
   smooth 4
   # Initialize box2d physics and create the world
-  @box2d = SB::Box2DProcessing.new(self)
+  @box2d = Box2D.new(self)
   box2d.create_world
   # We are setting a custom gravity
-  box2d.set_gravity(0, -20)
+  box2d.gravity(0, -20)
   # Create the empty list
   @particles = []
   # Create the surface
@@ -23,7 +24,6 @@ end
 def draw
   # If the mouse is pressed, we make new particles
   # We must always step through time!
-  box2d.step
   background(138, 66, 54)
   # Draw the surface
   surface.display

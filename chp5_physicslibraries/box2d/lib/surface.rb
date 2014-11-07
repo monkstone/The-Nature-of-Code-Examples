@@ -2,22 +2,18 @@
 # PBox2D example
 
 # An uneven surface boundary
-module SB
-  include_package 'org.jbox2d.collision.shapes'
-  include_package 'org.jbox2d.common'
-  include_package 'org.jbox2d.dynamics'
-  include_package 'shiffman.box2d'
 
   class Surface
+    include Processing::Proxy
     # We'll keep track of all of the surface points
     attr_reader :surface, :body, :box2d, :y, :width, :height
 
     def initialize b2d
       @box2d = b2d
       @surface = []
-      @width, @height = $app.width, $app.height
+      @width, @height = b2d.width, b2d.height
       # This is what box2d uses to put the surface in its world
-      chain = SB::ChainShape.new
+      chain = ChainShape.new
       # Perlin noise argument
       xoff = 0.0
       # This has to go backwards so that the objects  bounce off the top of the surface
@@ -31,7 +27,7 @@ module SB
           @y = 100 + x * 1.1 + map1d(noise(xoff), (0..1.0), (-80..80))
         end
         # Store the vertex in screen coordinates
-        surface << SB::Vec2.new(x, y)
+        surface << Vec2.new(x, y)
         # Move through perlin noise
         xoff += 0.1
       end
@@ -39,12 +35,12 @@ module SB
       # from the ArrayList we made
       vertices = []
       surface.each do |surf|
-        vertices << box2d.coord_pixels_to_world(surf)
+        vertices << box2d.processing_to_world(surf)
       end
      # Create the chain!
       chain.createChain(vertices, vertices.length)
       # The edge chain is now attached to a body via a fixture
-      bd = SB::BodyDef.new
+      bd = BodyDef.new
       bd.position.set(0.0, 0.0)
       @body = box2d.createBody(bd)
       # Shortcut, we could define a fixture if we
@@ -68,6 +64,7 @@ module SB
   end
 
   class Particle
+    include Processing::Proxy
     # We need to keep track of a Body
 
     attr_reader :body, :box2d, :x, :y, :r
@@ -86,16 +83,16 @@ module SB
 
     # Is the particle ready for deletion?
     def done
-      pos = box2d.get_body_pixel_coord(body)
+      pos = box2d.body_coord(body)
       # Is it off the bottom of the screen?
-      return false unless (pos.y > $app.height + r * 2)
+      return false unless (pos.y > box2d.height + r * 2)
       kill_body
       true
     end
 
     def display
       # We look at each body and get its screen position
-      pos = box2d.get_body_pixel_coord(body)
+      pos = box2d.body_coord(body)
       # Get its angle of rotation
       a = body.get_angle
       push_matrix
@@ -113,14 +110,14 @@ module SB
     # This function adds the rectangle to the box2d world
     def make_body(x, y, r)
       # Define and create the body
-      bd = SB::BodyDef.new
-      bd.position = box2d.coord_pixels_to_world(x, y)
-      bd.type = SB::BodyType::DYNAMIC
-      @body = box2d.world.create_body(bd)
+      bd = BodyDef.new
+      bd.position = box2d.processing_to_world(x, y)
+      bd.type = BodyType::DYNAMIC
+      @body = box2d.create_body(bd)
       # Make the body's shape a circle
-      cs = SB::CircleShape.new
-      cs.m_radius = box2d.scalar_pixels_to_world(r)
-      fd = SB::FixtureDef.new
+      cs = CircleShape.new
+      cs.m_radius = box2d.scale_to_world(r)
+      fd = FixtureDef.new
       fd.shape = cs
       # Parameters that affect physics
       fd.density = 1
@@ -129,8 +126,7 @@ module SB
       # Attach fixture to body
       body.create_fixture(fd)
       # Give it a random initial velocity (and angular velocity)
-      body.set_linear_velocity(SB::Vec2.new(rand(-10..10), rand(5..10)))
+      body.set_linear_velocity(Vec2.new(rand(-10..10), rand(5..10)))
       body.set_angular_velocity(rand(-10..10))
     end
   end
-end
