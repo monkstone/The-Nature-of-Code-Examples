@@ -48,3 +48,4 @@ Because of the peculiar choice by the processing guys down is up (dimensions in 
 
 [example sketches]:https://github.com/ruby-processing/jbox2d/blob/master/examples/
 [methods provided]:https://github.com/ruby-processing/jbox2d/blob/master/ext/processing/box2d/Box2DProcessing.java
+[pbox2d gem]:https://github.com/ruby-processing/jbox2d
