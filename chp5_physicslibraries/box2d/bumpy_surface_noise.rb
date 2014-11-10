@@ -5,6 +5,8 @@
 require 'pbox2d'
 require_relative 'lib/surface'
 
+include ContactListener
+
 attr_reader :surface, :box2d, :particles
 
 def setup
@@ -12,9 +14,10 @@ def setup
   smooth 4
   # Initialize box2d physics and create the world
   @box2d = Box2D.new(self)
+  box2d.init_options(gravity: [0, -20])
   box2d.create_world
-  # We are setting a custom gravity
-  box2d.gravity(0, -20)
+  # to later set a custom gravity
+  # box2d.gravity([0, -20])
   # Create the empty list
   @particles = []
   # Create the surface
