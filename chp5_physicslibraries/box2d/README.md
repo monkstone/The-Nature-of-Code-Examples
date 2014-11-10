@@ -1,7 +1,7 @@
 ###Note 10 November 2014
 
 
-These examples were created for the [pbox2d gem][] version 0.2.0 which is only loosely based on Dan Shiffmans Box2D for processing. The main difference being that parameters are no set using hash entry, allowing a more ruby-like experience as with Dan Shiffmans there is incomplete support for jbox2d functionality, but there is scope to extend it.
+These examples were created for the [pbox2d gem][] version 0.2.0 which is only loosely based on Dan Shiffmans Box2D for processing. The main difference being that parameters are set using hash entry, allowing a more ruby-like experience as with Dan Shiffmans there is incomplete support for jbox2d functionality, but there is scope to extend it.
 
 ### Using pbox2d in some more detail
 You should have ruby-processing and the pbox2d gem installed, from your processing sketch `require` pbox2d
