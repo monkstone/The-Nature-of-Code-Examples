@@ -44,7 +44,7 @@ Since version 0.2.0 the design of the `pbox2d` is somewhat different from the Da
 ```
 ### From sketch to physics world and vice versa
 
-Because of the peculiar choice by the processing guys down is up (dimensions in pixels) jbox2d doesn't like to live in the pixel world (also up is up), and prefers meters or feet and inches (whatever). Upshot is need to scale between the two worlds using `world_to_processing` and `processing_to_world` [methods provided][]. You should read the book chapter where Dan explains it all.
+Because of the peculiar choice by the processing guys down is up (dimensions in pixels) jbox2d doesn't like to live in the pixel world (also up is up), and prefers meters or feet and inches (whatever). Upshot is need to scale between the two worlds using `world_to_processing` and `processing_to_world` [methods provided][]. You should read the book chapter where Dan explains it all, albeit with slightly different method names.
 
 [example sketches]:https://github.com/ruby-processing/jbox2d/blob/master/examples/
 [methods provided]:https://github.com/ruby-processing/jbox2d/blob/master/ext/processing/box2d/Box2DProcessing.java
