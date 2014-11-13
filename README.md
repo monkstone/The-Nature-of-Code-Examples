@@ -9,9 +9,11 @@ Although many of the sketches here stand on their own merit, you should remember
 
 ruby 2.1 (note syntax clamped to 1.9.3 for jruby)
 
-jruby-1.7.15
+jruby-1.7.16.1
 
-ruby-processing version 2.6.3
+ruby-processing gem version 2.6.4
+
+pbox2d gem version 0.3.0
 
 
 [The Nature of Code]:http://natureofcode.com
