@@ -29,7 +29,7 @@ require_relative 'node'
 attr_reader :physics, :clusters, :show_physics, :show_particles, :f
 
 def setup
-  size(640,360)
+  size(640, 360)
   @f = create_font('Georgia', 12, true)
   @show_physics = true
   @show_particles = true
@@ -73,19 +73,19 @@ def draw
   # Instructions
   fill(0)
   text_font(f)
-  text("'p' to display or hide particles\n'c' to display or hide connections\n'n' for new graph",10,20)
+  text("'p' to display or hide particles\n'c' to display or hide connections\n'n' for new graph", 10, 20)
 end
 
 # Key press commands
 def key_pressed
   case key
   when 'c'
-  @show_physics = !show_physics
-  @show_particles = true if !show_physics
+    @show_physics = !show_physics
+    @show_particles = true unless show_physics
   when 'p'
-  @show_particles = !show_particles
-  @show_physics = true if !show_particles
+    @show_particles = !show_particles
+    @show_physics = true unless show_particles
   when  'n'
-  new_graph
+    new_graph
   end
 end
