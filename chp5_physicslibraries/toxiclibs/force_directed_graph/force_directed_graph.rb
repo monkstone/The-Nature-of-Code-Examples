@@ -22,6 +22,7 @@
 # License along with this library if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+require 'forwardable'
 require 'toxiclibs'
 require_relative 'cluster'
 require_relative 'node'
@@ -45,7 +46,7 @@ def new_graph
   # Clear physics
   physics.clear
   center = TVec2D.new(width / 2, height / 2)
-  @clusters = (0..8).map { Cluster.new(physics, rand(3..8), rand(20..100), center) }
+  @clusters = (0..8).map { Cluster.new(rand(3..8), rand(20..100), center) }
   #	All clusters connect to all clusters
   clusters.each_with_index do |ci, i|
     clusters[i + 1..clusters.size - 1].each do |cj|

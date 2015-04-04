@@ -29,6 +29,7 @@
 # License along with this library if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+require 'forwardable'
 require 'toxiclibs'
 require_relative 'blanket'
 require_relative 'connection'
@@ -40,7 +41,7 @@ def setup
   size(640, 360)
   @physics = Physics::VerletPhysics2D.new
   physics.addBehavior(Physics::GravityBehavior2D.new(TVec2D.new(0, 0.1)))
-  @b = Blanket.new(physics)
+  @b = Blanket.new(self)
 end
 
 def draw
