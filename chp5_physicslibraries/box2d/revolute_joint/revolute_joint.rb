@@ -19,17 +19,17 @@ end
 
 # Click the mouse to turn on or off the motor
 def mouse_pressed
-  windmill.toggleMotor
+  windmill.toggle_motor
 end
 
 def draw
   background(255)
   if rand < 0.1
-    sz = rand(4..8)
+    sz = rand(4.0..8)
     particles << Particle.new(rand(width / 2 - 100..width / 2 + 100), -20, sz)
   end
   
-  # Look at all particles
+  # Look at all particles, in reverse order
   particles.reverse_each do |p|
     p.display
     # Particles that leave the screen, we delete them
@@ -39,7 +39,7 @@ def draw
   end
   # Draw the windmill
   windmill.display
-  status = windmill.motorOn ? "ON" : "OFF"
+  status = windmill.motor_on? ? "ON" : "OFF"
   fill(0)
   text(format("Click mouse to toggle motor.\nMotor: %s", status), 10, height - 30)
 end
