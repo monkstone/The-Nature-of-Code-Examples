@@ -38,7 +38,7 @@ class Particle
   end
 
   # This function removes the particle from the box2d world
-  def killBody
+  def kill_body
     box2d.destroy_body(body)
   end
   
