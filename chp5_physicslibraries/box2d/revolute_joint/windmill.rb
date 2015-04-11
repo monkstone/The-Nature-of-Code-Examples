@@ -8,7 +8,6 @@ require_relative 'box'
 class Windmill
   extend Forwardable
   def_delegators(:@app, :ellipse, :no_stroke, :box2d, :fill)
-  
   # Our object is two boxes and one joint
   # Consider making the fixed box much smaller and not drawing it
   attr_reader :joint, :box1, :box2
@@ -18,17 +17,14 @@ class Windmill
     # Initialize locations of two boxes
     @box1 = Box.new(x, y - 20, 120, 10, false)
     @box2 = Box.new(x, y, 10, 40, true)
-    
     # Define joint as between two bodies
     rjd = RevoluteJointDef.new
     # NB: using java_send to access the unreachable 'initialize' method
     rjd.java_send :initialize, [Body, Body, Vec2], box1.body, box2.body, box1.body.getWorldCenter
-    
     # Turning on a motor (optional)
     rjd.motorSpeed = Math::PI * 2       # how fast?
     rjd.maxMotorTorque = 1000.0 # how powerful?
     rjd.enableMotor = false      # is it on?
-    
     # There are many other properties you can set for a Revolute joint
     # For example, you can limit its angle between a minimum and a maximum
     # See box2d manual for more    
@@ -37,11 +33,11 @@ class Windmill
   end
   
   # Turn the motor on or off
-  def toggleMotor
+  def toggle_motor
     joint.enableMotor(!joint.isMotorEnabled)
   end
   
-  def motorOn
+  def motor_on?
     joint.isMotorEnabled
   end  
   
