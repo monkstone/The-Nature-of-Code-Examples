@@ -17,16 +17,11 @@ def setup
   # Initialize box2d physics and create the world
   @box2d = Box2D.new(self)
   box2d.create_world
-  
-  # Create ArrayLists	
   @pairs = []
-  
   @boundaries = []
-
   # Add a bunch of fixed boundaries
   boundaries << Boundary.new(width / 4, height - 5, width / 2 - 50, 10)
   boundaries << Boundary.new(3 * width / 4, height - 50, width / 2 - 50, 10)
-
 end
 
 def draw
