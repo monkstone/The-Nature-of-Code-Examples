@@ -7,17 +7,11 @@ require 'forwardable'
 class Boundary
   extend Forwardable
   def_delegators(:@app, :box2d, :rect_mode, :rect, :fill, :stroke)
-  # A boundary is a simple rectangle with x,y,width,and height
-  attr_reader :b, :x, :y, :w, :h
+  # A boundary is a simple rectangle with x, y, width, and height
+  attr_reader :x, :y, :w, :h
   
-  # But we also have to make a body for box2d to know about it
-
-
-  def initialize(x_, y_, w_, h_)
-    @x = x_
-    @y = y_
-    @w = w_
-    @h = h_
+  def initialize(x, y, w, h)
+    @x, @y, @w @h = x, y, w, h
     @app = $app
 
     # Define the polygon
@@ -47,5 +41,3 @@ class Boundary
     rect(x, y, w, h)
   end
 end
-
-
