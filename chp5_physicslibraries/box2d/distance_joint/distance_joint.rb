@@ -31,9 +31,6 @@ end
 
 def draw
   background(255)
-  # We must always step through time!
-  # When the mouse is clicked, add a new Box object
-  # Display all the boxes
   pairs.each(&:display)
   # Display all the boundaries
   boundaries.each(&:display)
@@ -44,12 +41,3 @@ end
 def mouse_pressed
    pairs << Pair.new(mouse_x, mouse_y)
 end
-
-
-
-
-
-
-
-
-
