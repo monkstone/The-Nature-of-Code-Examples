@@ -28,7 +28,6 @@ def draw
     sz = rand(4.0..8)
     particles << Particle.new(rand(width / 2 - 100..width / 2 + 100), -20, sz)
   end
-  
   # Look at all particles, in reverse order
   particles.reverse_each do |p|
     p.display
