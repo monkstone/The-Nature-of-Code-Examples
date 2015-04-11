@@ -13,7 +13,6 @@ class Boundary
   def initialize(x, y, w, h)
     @x, @y, @w @h = x, y, w, h
     @app = $app
-
     # Define the polygon
     sd = PolygonShape.new
     # Figure out the box2d coordinates
@@ -21,14 +20,11 @@ class Boundary
     box2dH = box2d.scale_to_world(h / 2)
     # We're just a box
     sd.setAsBox(box2dW, box2dH)
-
-
     # Create the body
     bd = BodyDef.new
     bd.type = BodyType::STATIC
     bd.position.set(box2d.processing_to_world(x,y))
     b = box2d.createBody(bd)
-    
     # Attached the shape to the body using a Fixture
     b.createFixture(sd,1)
   end
