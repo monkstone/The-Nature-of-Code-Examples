@@ -7,7 +7,7 @@ require 'forwardable'
 class Pair
   extend Forwardable
   def_delegators(:@app, :box2d, :stroke, :line, :stroke_weight)
-  attr_reader :p1, :p2, :len, :w, :h
+  attr_reader :p1, :p2, :len
   # Chain constructor
   def initialize(x, y)
     @app = $app
@@ -40,7 +40,7 @@ class Pair
     pos2 = box2d.body_coord(p2.body)
     # Is it off the screen?
     if (0..@app.width).include?(pos1.x) || (0..@app.width).include?(pos2.x)
-      if (0..@app.height).include?(pos1.y) || (0..@app.width).include?(pos2.y)
+      if (0..@app.height).include?(pos1.y) || (0..@app.height).include?(pos2.y)
         return false
       end
     end
