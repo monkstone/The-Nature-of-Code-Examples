@@ -11,7 +11,7 @@ class Boundary
   attr_reader :x, :y, :w, :h
   
   def initialize(x, y, w, h)
-    @x, @y, @w @h = x, y, w, h
+    @x, @y, @w, @h = x, y, w, h
     @app = $app
     # Define the polygon
     sd = PolygonShape.new
