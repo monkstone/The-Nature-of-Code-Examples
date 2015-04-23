@@ -25,15 +25,9 @@ def setup
 end
 
 def draw
-  background(255)  
-  # Look at all pairs, in reverse order
-  pairs.reverse_each do |p|
-    p.display
-    # pairs that leave the screen, we delete them
-    # (note they have to be deleted from both the box2d world and our list
-    next unless p.done?
-    pairs.shift
-  end
+  background(255)
+  pairs.reject!(&:done?)
+  pairs.each(&:display)
   # Display all the boundaries
   boundaries.each(&:display)  
   fill(0)

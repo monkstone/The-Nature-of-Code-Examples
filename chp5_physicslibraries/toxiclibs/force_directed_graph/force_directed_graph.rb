@@ -1,7 +1,7 @@
 #
 # <p>Force directed graph,
-# heavily based on: <a href="http:#code.google.com/p/fidgen/">fid.gen</a><br/>
-# <a href="http:#www.shiffman.net/teaching/nature/toxiclibs/">The Nature of Code</a><br/>
+# heavily based on: <a href="http://code.google.com/p/fidgen/">fid.gen</a><br/>
+# <a href="http://www.shiffman.net/teaching/nature/toxiclibs/">The Nature of Code</a><br/>
 # Spring 2010</p>
 #
 # Copyright (c) 2010 Daniel Shiffman
@@ -11,7 +11,7 @@
 # License as published by the Free Software Foundation either
 # version 2.1 of the License, or (at your option) any later version.
 #
-# http:#creativecommons.org/licenses/LGPL/2.1/
+# http://creativecommons.org/licenses/LGPL/2.1/
 #
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY without even the implied warranty of
