@@ -1,8 +1,7 @@
-# The Nature of Code
-# Daniel Shiffman
-# http://natureofcode.com
+# dummy_spring.rb by Martin Prout
+# using duck-typing so class can stand in for Spring
 
-# This class avoids test for nil
+# Using this class avoids test for nil
 class DummySpring
   def initialize; end
 
