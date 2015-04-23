@@ -1,9 +1,10 @@
+
 require 'forwardable'
 
 module Runnable
   def run
-    reject! { |item| item.done }
-    each { |item| item.display }
+    reject!(&:done)
+    each(&:display)
   end
 end
 
@@ -36,8 +37,7 @@ require 'pbox2d'
 class Particle
   include Processing::Proxy
   TRAIL_SIZE = 6
-  # We need to keep track of a Body
-  
+  # We need to keep track of a Body  
   attr_reader :trail, :body, :box2d
   
   # Constructor

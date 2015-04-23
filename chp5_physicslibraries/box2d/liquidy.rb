@@ -6,7 +6,7 @@ def setup
   size(400,300)
   @box2d = Box2D.new(self)
   box2d.init_options(gravity: [0, -20])
-  box2d.create_world  
+  box2d.create_world
   # to set a custom gravity otherwise
   # box2d.gravity([0, -20])
   # Create Arrays
@@ -34,5 +34,3 @@ def mouse_pressed
   # Add a new Particle System whenever the mouse is clicked
   systems << ParticleSystem.new(box2d, 0, mouse_x, mouse_y)
 end
-
-
