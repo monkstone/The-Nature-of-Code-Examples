@@ -1,7 +1,6 @@
 # The Nature of Code
 # Daniel Shiffman
 # http://natureofcode.com
-require 'forwardable'
 
 # A fixed boundary class
 class Boundary
