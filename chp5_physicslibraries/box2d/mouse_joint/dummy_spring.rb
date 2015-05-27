@@ -14,9 +14,9 @@ class DummySpring
   # we attach the spring to an x,y location
   # and the Box object's location
   def bind(x, y, box)
-    spring = Spring.new
-    spring.bind(x, y, box)
-    spring
+    @spring = Spring.new.tap do |spr|
+      spr.bind(x, y, box)
+    end
   end
 
   def destroy; end

@@ -41,7 +41,8 @@ end
 def mouse_pressed
   # Check to see if the mouse was clicked on the box and if so create
   # a real spring and bind the mouse location to the box with a spring
-  @spring = spring.bind(mouse_x, mouse_y, box) if box.contains(mouse_x, mouse_y)
+  return unless box.contains(mouse_x, mouse_y)
+  @spring = spring.bind(mouse_x, mouse_y, box) 
 end
 
 def draw
