@@ -1,3 +1,4 @@
+# We only need to include Math module
 class DNA
   include Math
   TWO_PI = PI * 2
@@ -12,7 +13,7 @@ class DNA
       @genes = Array.new(@lifetime) do
         angle = rand(TWO_PI)
         gene = Vec2D.new(cos(angle), sin(angle))
-        gene *= (rand(0 ... @maxforce))
+        gene *= rand(0...@maxforce)
         gene
       end
     end
@@ -39,12 +40,11 @@ class DNA
 
   # Based on a mutation probability, picks a new rand Vector
   def mutate(m)
-    @genes.each_index do |i|
-      if rand < m
-        angle = rand(TWO_PI)
-        @genes[i] = Vec2D.new(cos(angle), sin(angle))
-        @genes[i] *= (rand(0 ... @maxforce))
-      end
+    @genes.length.times do |i|
+      next unless rand < m
+      angle = rand(TWO_PI)
+      @genes[i] = Vec2D.new(cos(angle), sin(angle))
+      @genes[i] *= rand(0...@maxforce)
     end
     @genes[0].normalize!
   end

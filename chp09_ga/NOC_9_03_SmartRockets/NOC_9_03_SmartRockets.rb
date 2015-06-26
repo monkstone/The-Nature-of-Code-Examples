@@ -1,3 +1,4 @@
+#
 # The Nature of Code
 # NOC_9_03_SmartRockets
 # Pathfinding w/ Genetic Algorithms
@@ -49,7 +50,7 @@ def draw
     @population.reproduction
   end
   # Draw the obstacles
-  @obstacles.each { |o| o.display }
+  @obstacles.each(&:display)
   # Display some info
   fill(0)
   text("Generation #: #{@population.generations}", 10, 18)

@@ -19,8 +19,7 @@ class Obstacle
   end
 
   def contains(spot)
-    ((location.x .. location.x + @w).include? spot.x) &&
-    ((location.y .. location.y + @h).include? spot.y)
+    ((location.x..location.x + @w).include? spot.x) &&
+      ((location.y..location.y + @h).include? spot.y)
   end
 end
-

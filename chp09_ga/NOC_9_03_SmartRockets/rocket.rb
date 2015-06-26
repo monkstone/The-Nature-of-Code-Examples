@@ -1,16 +1,15 @@
 # Rocket class -- this is just like our Boid / Particle class
 # the only difference is that it has DNA & fitness
-
 class Rocket
   include Processing::Proxy
   attr_reader :acceleration, :dna, :hit_target, :stopped, :location, :velocity
 
-  def initialize(l, dna_, total_rockets)
+  def initialize(l, dna)
     @acceleration = Vec2D.new
     @velocity = Vec2D.new
     @location = l.copy
     @r = 4
-    @dna = dna_
+    @dna = dna
     @finish_time = 0  # We're going to count how long it takes to reach target
     @record_dist = 10_000      #  Some high number that will be beat instantly
     @gene_counter = 0
@@ -98,4 +97,3 @@ class Rocket
     pop_matrix
   end
 end
-

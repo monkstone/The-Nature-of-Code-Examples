@@ -7,7 +7,7 @@ class Population
     @mutation_rate = m
     @population = Array.new(num) do
       location = Vec2D.new(width / 2, height + 20)
-      Rocket.new(location, DNA.new, num)
+      Rocket.new(location, DNA.new)
     end
     @mating_pool = []
     @generations = 0
@@ -26,12 +26,12 @@ class Population
 
   # Did anything finish?
   def target_reached
-    @population.any? { |p| p.hit_target }
+    @population.any?(&:hit_target)
   end
 
   # Calculate fitness for each creature
   def fitness
-    @population.each { |p| p.fitness }
+    @population.each(&:fitness)
   end
 
   # Generate a mating pool
@@ -39,15 +39,15 @@ class Population
     # Clear the ArrayList
     @mating_pool.clear
     # Calculate total fitness of whole population
-    max_fitness = @population.max_by { |x| x.fitness }.fitness
+    max_fitness = @population.max_by(&:fitness).fitness
     # Calculate fitness for each member of the population (scaled to value
     # between 0 and 1). Based on fitness, each member will get added to the
     # mating pool a certain number of times. A higher fitness = more entries
     # to mating pool = more likely to be picked as a parent.  A lower fitness
     # = fewer entries to mating pool = less likely to be picked as a parent
     @population.each do |p|
-      fitness_normal = map1d(p.fitness, (0 .. max_fitness), (0 .. 1.0))
-      (fitness_normal * 100).to_i.times{ @mating_pool << p }
+      fitness_normal = map1d(p.fitness, (0..max_fitness), (0..1.0))
+      (fitness_normal * 100).to_i.times { @mating_pool << p }
     end
   end
 
@@ -70,9 +70,8 @@ class Population
       child.mutate(@mutation_rate)
       # Fill the new population with the new child
       location = Vec2D.new(width / 2, height + 20)
-      @population[i] = Rocket.new(location, child, @population.size)
+      @population[i] = Rocket.new(location, child)
     end
     @generations += 1
   end
 end
-
