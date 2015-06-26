@@ -5,7 +5,7 @@
 
 # A class to describe a population of "creatures"
 class Population
-  include Processing::Proxy
+  include Processing::HelperMethods
   attr_reader :mutation_rate, :population, :mating_pool, :generations, :width, :height, :target
 
   # Initialize the population

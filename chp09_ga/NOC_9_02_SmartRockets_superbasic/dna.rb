@@ -4,16 +4,17 @@
 
 # DNA is an array of vectors
 class DNA
+  include Math
   # The maximum strength of the forces
   MAX_FORCE = 0.1
-
+  TWO_PI = PI * 2
   attr_reader :genes, :lifetime
 
   # Constructor (makes a DNA of random PVectors)
   def create_genes(lftm)
     @genes = (0...lftm).map do
-      angle = rand(Math::PI * 2)
-      Vec2D.new(Math.cos(angle), Math.sin(angle)) * rand(0..MAX_FORCE)
+      angle = rand(TWO_PI)
+      Vec2D.new(cos(angle), sin(angle)) * rand(0..MAX_FORCE)
     end
   end
 
@@ -42,8 +43,8 @@ class DNA
   def mutate(m)
     genes.length.times do |i|
       if rand < m
-        angle = rand(Math::PI * 2)
-        genes[i] = Vec2D.new(Math.cos(angle), Math.sin(angle)) * rand(0..MAX_FORCE)
+        angle = rand(TWO_PI)
+        genes[i] = Vec2D.new(cos(angle), sin(angle)) * rand(0..MAX_FORCE)
       end
     end
   end
