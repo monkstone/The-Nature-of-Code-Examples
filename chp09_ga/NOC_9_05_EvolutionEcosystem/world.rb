@@ -1,6 +1,5 @@
 # Evolution EcoSystem
 module Eco
-
   # A collection of food in the world
   class Food
     include Processing::Proxy
@@ -29,7 +28,6 @@ module Eco
   end
 
   # Creature class
-
   class Bloop
     include Processing::Proxy
     attr_reader :width, :height, :health, :dna, :location
@@ -40,8 +38,8 @@ module Eco
       @xoff = rand(1_000)
       @yoff = rand(1_000)
       @dna = dna
-      @maxspeed = map1d(dna.genes[0], (0 .. 1), (15 .. 0))
-      @r = map1d(dna.genes[0], (0 .. 1), (0 .. 50))
+      @maxspeed = map1d(dna.genes[0], (0..1), (15..0))
+      @r = map1d(dna.genes[0], (0..1), (0..50))
       @width, @height = $app.width, $app.height
     end
 
@@ -64,14 +62,14 @@ module Eco
 
     def reproduce
       return nil if rand >= 0.0005
-      childDNA = dna.copy
-      childDNA.mutate(0.01)
-      Bloop.new(location, childDNA)
+      child = dna.copy
+      child.mutate(0.01)
+      Bloop.new(location, child)
     end
 
     def update
-      vx = map1d(noise(@xoff), (0 .. 1.0), (-@maxspeed .. @maxspeed))
-      vy = map1d(noise(@yoff), (0 .. 1.0), (-@maxspeed .. @maxspeed))
+      vx = map1d(noise(@xoff), (0..1.0), (-@maxspeed..@maxspeed))
+      vy = map1d(noise(@yoff), (0..1.0), (-@maxspeed..@maxspeed))
       velocity = Vec2D.new(vx, vy)
       @xoff += 0.01
       @yoff += 0.01
@@ -97,11 +95,11 @@ module Eco
     end
   end
 
-
+  # DNA class
   class DNA
     attr_reader :genes
     def initialize(newgenes = [])
-      newgenes << rand(0 .. 1.0) if newgenes.empty?
+      newgenes << rand(0..1.0) if newgenes.empty?
       @genes = newgenes
     end
 
@@ -111,13 +109,12 @@ module Eco
 
     # this code doesn't make sense unless there is more than one gene
     def mutate(m)
-      @genes.map! { |gene| (rand < m) ? rand(0 .. 1.0) : gene }
+      @genes.map! { |gene| (rand < m) ? rand(0..1.0) : gene }
     end
   end
 
   # The World we live in
   # Has bloops and food
-
   class World
     attr_reader :bloops, :food
 

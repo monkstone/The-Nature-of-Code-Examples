@@ -1,6 +1,5 @@
-# Evolution EcoSystem
+# EvolutionEcoSystem
 # The Nature of Code
-
 # A World of creatures that eat food
 # The more they eat, the longer they survive
 # The longer they survive, the more likely they are to reproduce
@@ -10,7 +9,7 @@
 
 load_library :vecmath
 
-require_relative './world'
+require_relative 'world'
 
 include Eco
 
@@ -34,5 +33,3 @@ end
 def mouse_dragged
   world.born(mouse_x, mouse_y)
 end
-
-

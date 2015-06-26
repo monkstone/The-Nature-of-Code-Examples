@@ -197,11 +197,11 @@ def display_info
   text_size(40)
   text(answer, 20, 100)
   text_size(18)
-  text("total generations: #{@population.generations}", 20, 160)
-  text("average fitness:   #{format('%.2f', @population.average_fitness)}",
+  text(format('total generations: %d', @population.generations), 20, 160)
+  text(format('average fitness:   %.2f', @population.average_fitness),
        20, 180)
-  text("total population:  #{@popmax}", 20, 200)
-  text("mutation rate:     #{(@mutation_rate * 100).to_i}%", 20, 220)
+  text(format('total population:  %d', @popmax), 20, 200)
+  text(format('mutation rate:     %d', (@mutation_rate * 100).to_i), 20, 220)
   text_size(10)
   text("All phrases:\n #{@population.all_phrases}", 500, 10)
 end
