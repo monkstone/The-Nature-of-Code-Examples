@@ -1,4 +1,4 @@
-** Example of using refined includes in ruby-processing
+## Example of using refined includes in ruby-processing
 In dna.rb, we only require access to ruby math methods so we just `include Math` in the DNA class
 
 In population.rb we want to use the helper method `map1d` so we just `include Processing::HelperMethods`
