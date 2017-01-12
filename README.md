@@ -1,5 +1,7 @@
 #The-Nature-of-Code-Examples-in-Ruby
 
+__IMPORTANT SINCE 2017 RUBY-PROCESSING HAS BEEN SUPERSEDED BY JRUBY_ART AND PROPANE__
+
 A ruby port of the [examples][] from [The Nature of Code][] by Daniel Shiffman.
 In this fork PVector has been replaced by Vec2D, Vec3D or a lighweight alternative. Processing map has been replaced by ruby-processings map1d.
 
